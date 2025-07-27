@@ -8,6 +8,10 @@
 
 - 起動
   - `poetry run python {ファイルパス}`
+- 仮想環境に入る
+  - `eval $(poetry env activate)`
+- 仮想環境から出る
+  - `deactivate`
 
 ## package
 

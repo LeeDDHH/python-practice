@@ -9,3 +9,10 @@
   - `source venv/bin/activate`
 - 終了
   - `deactivate`
+
+## package
+
+- requests
+  - http通信時につかう
+- pyproject-flake8
+  - Pythonのコードチェッカー

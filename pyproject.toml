@@ -23,3 +23,39 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.1"
 
+[tool.black]
+line-length = 79
+include = '\.py$'
+exclude = '''
+(
+  /(
+      \.venv
+    | _build
+    | build
+    | dist
+  )/
+)
+'''
+
+[tool.isort]
+line_length = 79
+profile = "black"
+
+[tool.mypy]
+# 型チェックの基本設定
+strict = true
+
+# 特定のフォルダ・ファイルを無視
+exclude = "(^build/|^dist/)"
+
+# エラー表示を詳しくする
+show_error_codes = true
+
+# 動的型付け（`Any`型）を許可しない
+disallow_any_unimported = true
+disallow_any_generics = true
+
+# 未チェックコードを許可しない
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true

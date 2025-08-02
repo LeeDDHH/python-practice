@@ -47,13 +47,19 @@ class WeworkRemotelyScraper(Scraper):
                 })
             categories = [category.text for category in categories]
             categories = Util.str_list_to_str(categories)
-            self.job_list.append((title, company, head_quater, categories))
+            job_data = {
+                "title": title,
+                "company": company,
+                "head_quater": head_quater,
+                "categories": categories
+            }
+            self.job_list.append(job_data)
         return self.job_list
 
     def print_jobs(self):
         jobs = self.get_jobs()
         for job in jobs:
-            Util.print_job_details(*job)
+            Util.print_job_details(**job)
 
 
 class Util:

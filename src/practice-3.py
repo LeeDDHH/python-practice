@@ -76,19 +76,23 @@ class WeworkRemotelyScraper(Scraper):
             last_url = urlparse(last.find("a")["href"])
             params = parse_qs(last_url.query)
             last_page_number = params['page'][0]
+            # 모든 페이지의 직업정보를 가져오기
             self._get_jobs_per_page(
                 f"{self.base_url}{self.target_path}",
                 int(last_page_number)
             )
         except (AttributeError, KeyError, IndexError):
+            # 페이지가 없거나 오류가 발생하면 기본 직업정보 가져오기
             self._get_jobs(f"{self.base_url}{self.target_path}")
             return self._print_jobs()
 
+    # 각 url별로 직업정보을 가져오기
     def _get_jobs_per_page(self, url: str, last_page_number: int) -> None:
         for page in range(1, last_page_number + 1):
             self._get_jobs(f"{url}?page={page}")
         self._print_jobs()
 
+    # 페이지의 각 직업정보을 가져오기
     def _get_jobs(self, url: str) -> None:
         soup = self.get_content(url)
         jobs = soup.find("section", {"class": "jobs"}).find_all("li")[0:-1]
@@ -96,6 +100,7 @@ class WeworkRemotelyScraper(Scraper):
             job_data = self._shape_job_data(job)
             self.job_list.append(job_data)
 
+    # 각 직업정보의 데이터를 정리해서 반환
     def _shape_job_data(self, job) -> JobData:
         title = job.find(
             "h4",
@@ -125,10 +130,12 @@ class WeworkRemotelyScraper(Scraper):
             "url": url
         }
 
+    # 직업정보를 출력
     def _print_jobs(self) -> None:
         for job in self.job_list:
             self._print_job_details(**job)
 
+    # 직업정보 안의 URL을 반환
     def _get_job_url(self, url: str) -> str:
         if not url:
             return ""
@@ -137,6 +144,7 @@ class WeworkRemotelyScraper(Scraper):
         else:
             return f"{self.base_url}{url[0]['href']}"
 
+    # 직업정보를 출력
     def _print_job_details(self,
                            title: str,
                            company: str,
@@ -154,6 +162,7 @@ class WeworkRemotelyScraper(Scraper):
 
 class Util:
     @staticmethod
+    # 문자열 리스트를 하나의 문자열로 변환
     def str_list_to_str(str_list) -> str:
         return ", ".join(str_list)
 

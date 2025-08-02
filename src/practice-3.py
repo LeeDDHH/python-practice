@@ -54,13 +54,14 @@ class Scraper:
         pass
 
     @abstractmethod
-    def _print_job_details(self,
-                           title: str,
-                           company: str,
-                           head_quater: str,
-                           categories: str,
-                           url: str
-                           ) -> None:
+    def _print_job_details(
+        self,
+        title: str,
+        company: str,
+        head_quater: str,
+        categories: str,
+        url: str,
+    ) -> None:
         pass
 
 
@@ -75,11 +76,10 @@ class WeworkRemotelyScraper(Scraper):
             last = pagination.find("span", {"class": "last"})
             last_url = urlparse(last.find("a")["href"])
             params = parse_qs(last_url.query)
-            last_page_number = params['page'][0]
+            last_page_number = params["page"][0]
             # 모든 페이지의 직업정보를 가져오기
             self._get_jobs_per_page(
-                f"{self.base_url}{self.target_path}",
-                int(last_page_number)
+                f"{self.base_url}{self.target_path}", int(last_page_number)
             )
         except (AttributeError, KeyError, IndexError):
             # 페이지가 없거나 오류가 발생하면 기본 직업정보 가져오기
@@ -102,23 +102,15 @@ class WeworkRemotelyScraper(Scraper):
 
     # 각 직업정보의 데이터를 정리해서 반환
     def _shape_job_data(self, job) -> JobData:
-        title = job.find(
-            "h4",
-            {
-                "class": "new-listing__header__title"
-            }).text
-        company = job.find(
-            "p",
-            {
-                "class": "new-listing__company-name"
-            }).text
-        head_quater = job.find("p", {
-            "class": "new-listing__company-headquarters"
-            })
+        title = job.find("h4", {"class": "new-listing__header__title"}).text
+        company = job.find("p", {"class": "new-listing__company-name"}).text
+        head_quater = job.find(
+            "p", {"class": "new-listing__company-headquarters"}
+        )
         head_quater = head_quater.text if head_quater else "Not registered"
-        categories = job.find_all("p", {
-            "class": "new-listing__categories__category"
-            })
+        categories = job.find_all(
+            "p", {"class": "new-listing__categories__category"}
+        )
         categories = [category.text for category in categories]
         categories = Util.str_list_to_str(categories)
         url = self._get_job_url(job.find_all("a"))
@@ -127,7 +119,7 @@ class WeworkRemotelyScraper(Scraper):
             "company": company,
             "head_quater": head_quater,
             "categories": categories,
-            "url": url
+            "url": url,
         }
 
     # 직업정보를 출력
@@ -145,13 +137,14 @@ class WeworkRemotelyScraper(Scraper):
             return f"{self.base_url}{url[0]['href']}"
 
     # 직업정보를 출력
-    def _print_job_details(self,
-                           title: str,
-                           company: str,
-                           head_quater: str,
-                           categories: str,
-                           url: str
-                           ) -> None:
+    def _print_job_details(
+        self,
+        title: str,
+        company: str,
+        head_quater: str,
+        categories: str,
+        url: str,
+    ) -> None:
         print(f"Title: {title}")
         print(f"Company: {company}")
         print(f"Headquarters: {head_quater}")

@@ -32,21 +32,17 @@ class WeworkRemotelyScraper(Scraper):
         jobs = soup.find("section", {"class": "jobs"}).find_all("li")[0:-1]
         for job in jobs:
             title = job.find(
-                "h4",
-                {
-                    "class": "new-listing__header__title"
-                }).text
+                "h4", {"class": "new-listing__header__title"}
+            ).text
             company = job.find(
-                "p",
-                {
-                    "class": "new-listing__company-name"
-                }).text
-            head_quater = job.find("p", {
-                "class": "new-listing__company-headquarters"
-                }).text
-            categories = job.find_all("p", {
-                "class": "new-listing__categories__category"
-                })
+                "p", {"class": "new-listing__company-name"}
+            ).text
+            head_quater = job.find(
+                "p", {"class": "new-listing__company-headquarters"}
+            ).text
+            categories = job.find_all(
+                "p", {"class": "new-listing__categories__category"}
+            )
             categories = [category.text for category in categories]
             categories = Util.str_list_to_str(categories)
             url = self._get_job_url(job.find_all("a"))
@@ -55,7 +51,7 @@ class WeworkRemotelyScraper(Scraper):
                 "company": company,
                 "head_quater": head_quater,
                 "categories": categories,
-                "url": url
+                "url": url,
             }
             self.job_list.append(job_data)
         return self.job_list

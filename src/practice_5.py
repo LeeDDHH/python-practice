@@ -1,6 +1,7 @@
 from playwright.sync_api import sync_playwright
 import time
 from bs4 import BeautifulSoup
+import csv
 
 base_url = "https://www.wanted.co.kr/"
 
@@ -67,3 +68,17 @@ for job in jobs:
 
 print(len(jobs_db))
 print(jobs_db)
+
+# if jobs.csv doesn't exist, create empty csv.
+# if not os.path.exists("jobs.csv"):
+#     with open("jobs.csv", mode="w", newline="") as f:
+#         writer = csv.writer(f)
+
+file = open("./src/files/jobs.csv", mode="w", newline="")
+writer = csv.writer(file)
+writer.writerow(["title", "url", "company_name", "reward"])
+
+for job in jobs_db:
+    writer.writerow(job.values())
+
+file.close()

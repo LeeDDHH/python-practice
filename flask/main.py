@@ -3,6 +3,8 @@ from extractor.wanted import extract_wanted_jobs
 
 app = Flask('JobScrapper', template_folder='flask/templates')
 
+db = {}
+
 
 @app.route('/')
 def home():
@@ -12,7 +14,15 @@ def home():
 @app.route('/search')
 def search():
     keyword = request.args.get('keyword')
-    wanted = extract_wanted_jobs(keyword)
+    if not keyword:
+        return render_template("search.html", keyword='none', jobs=[])
+
+    if keyword in db:
+        wanted = db[keyword]
+    else:
+        wanted = extract_wanted_jobs(keyword)
+        db[keyword] = wanted
+
     return render_template("search.html", keyword=keyword, jobs=wanted)
 
 

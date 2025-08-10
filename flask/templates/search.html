@@ -11,7 +11,10 @@
   </head>
   <body>
     <main class="container">
-      <h1>Search Result: {{ keyword }}</h1>
+      <hgroup>
+        <h1>Search Result: {{ keyword }}</h1>
+        <a href="/export?keyword={{ keyword }}" target="_blank">Export to file</a>
+      </hgroup>
       <div class="overflow-auto">
         <table class="striped">
           <thead>

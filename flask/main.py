@@ -1,11 +1,16 @@
-from flask import Flask
+from flask import Flask, render_template
 
-app = Flask('JobScrapper')
+app = Flask('JobScrapper', template_folder='flask/templates')
 
 
 @app.route('/')
 def home():
-    return "Welcome to the Job Scrapper!"
+    return render_template("home.html", name='dong')
+
+
+@app.route('/search')
+def search():
+    return render_template("search.html")
 
 
 app.run("0.0.0.0", port=80, debug=True)

@@ -12,6 +12,10 @@
   - `eval $(poetry env activate)`
 - 仮想環境から出る
   - `deactivate`
+- poetryのキャッシュクリア
+  - `poetry cache clear --all`
+- パッケージのインストール
+  - `poetry add {パッケージ名}`
 
 ## package
 

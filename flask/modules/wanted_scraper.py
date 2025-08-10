@@ -45,7 +45,7 @@ class JobScraper:
         self.jobs_db = []
 
     def _get_content(self, keyword):
-        p = PlaywrightManager(headless=False)
+        p = PlaywrightManager(headless=True)
         page = p.new_page()
         page.goto(f"{base_url}/search?query={keyword}&tab=position")
 

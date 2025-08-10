@@ -2,7 +2,7 @@ from playwright.sync_api import sync_playwright
 import time
 from bs4 import BeautifulSoup
 
-base_url = "https://www.wanted.co.kr"
+base_url = "https://www.wanted.co.kr/"
 
 p = sync_playwright().start()
 
@@ -46,17 +46,24 @@ soup = BeautifulSoup(content, "html.parser")
 
 jobs = soup.find_all("div", role="listitem")
 
+jobs_db = []
+
 for job in jobs:
-    url = job.find("a")["href"]
-    title = job.find("strong")
+    url = f"{base_url}{job.find('a')['href']}"
+    title = job.find("strong").text
     company_name = job.find(
         "span",
         class_="CompanyNameWithLocationPeriod_CompanyNameWithLocationPeriod__company__ByVLu wds-nkj4w6",
-    )
-    location = job.find("div", class_="job-region")
+    ).text
+    reward = job.find('span', class_='JobCard_reward__oCSIQ').text
+    job = {
+        "title": title,
+        "url": url,
+        "company_name": company_name,
+        "reward": reward
+    }
 
-    # if title and company and location:
-    #     print(f"Title: {title.get_text(strip=True)}")
-    #     print(f"Company: {company.get_text(strip=True)}")
-    #     print(f"Location: {location.get_text(strip=True)}")
-    #     print("-" * 40)
+    jobs_db.append(job)
+
+print(len(jobs_db))
+print(jobs_db)

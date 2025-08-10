@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from extractor.wanted import extract_wanted_jobs
 
 app = Flask('JobScrapper', template_folder='flask/templates')
@@ -14,8 +14,8 @@ def home():
 @app.route('/search')
 def search():
     keyword = request.args.get('keyword')
-    if not keyword:
-        return render_template("search.html", keyword='none', jobs=[])
+    if keyword is None or not keyword:
+        return redirect('/')
 
     if keyword in db:
         wanted = db[keyword]

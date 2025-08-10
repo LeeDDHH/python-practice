@@ -48,7 +48,6 @@ class JobScraper:
         p = PlaywrightManager(headless=False)
         page = p.new_page()
         page.goto(f"{base_url}/search?query={keyword}&tab=position")
-        print(f"{base_url}/search?query={keyword}&tab=position")
 
         for i in range(5):
             time.sleep(3)
@@ -56,8 +55,6 @@ class JobScraper:
 
         content = page.content()
         p.close()
-
-        print(content) 
 
         return content
 
